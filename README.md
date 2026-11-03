@@ -53,9 +53,35 @@ Never:
 
 ## Installation
 
+Requirements: Python 3.12 or newer, [uv](https://docs.astral.sh/uv/), and git. The terminal UI library (`textual`) installs with Argus. [tmux](https://github.com/tmux/tmux) is only needed for the **s** key.
+
 ```bash
+git clone https://github.com/trantyson2781/argus.git
+cd argus
 uv venv && uv pip install -e .
 ```
+
+### Set up the terminal UI
+
+```bash
+# 1. Start it on any Python git repository (from the argus folder)
+uv run argus -C path/to/your/repo
+
+# 2. Optional: pair it with your coding agent. Run the agent and Argus
+#    in two panes of one tmux window, then press s in Argus to send a note.
+tmux new -s work          # left pane: claude (or your agent)
+                          # right pane: uv run argus -C path/to/your/repo
+
+# 3. Optional: let R and C run the repository's tests. Point Argus at a
+#    Python (3.12+) that has the repository's packages installed.
+export ARGUS_PYTHON=/path/to/your/repo/.venv/bin/python
+#    or write that path on one line in your-repo/.argus/python
+```
+
+Notes:
+* Views 1 to 4 and **/** only read your code. They work with no further setup.
+* If Argus finds your repository's own `.venv`, it uses that for R and C without any setting. Press **?** in the UI to see which Python it picked and why.
+* Argus never builds or installs your repository's environment.
 
 ---
 
