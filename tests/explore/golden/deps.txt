@@ -1,0 +1,18 @@
+DEPENDENCY MAP  demo  |  scope: all subsystems
+A ---> B = A imports B; n = import edges. L0 = top of the import stack;
+arrows point down to a higher L. Layers are import depth, NOT execution order.
+no tag = FACT   [I] INFERENCE   [?] UNKNOWN
+
+L0  +- alpha  (3 modules) -------------+
+    | ---> beta 3                      |
+    +----------------------------------+
+
+L1  +- beta  (12 modules) -------------+
+    | (imports nothing in this scope)  |
+    +----------------------------------+
+
+UNKNOWN
+  [?] Imports done through importlib or exec are not seen; arrows include
+      imports inside functions and TYPE_CHECKING blocks.
+
+Expand: --open NAME   (NAME: alpha, beta)

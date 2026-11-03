@@ -1,0 +1,42 @@
+DEPENDENCY MAP  demo  |  scope: subsystem beta
+A ---> B = A imports B; n = import edges. L0 = top of the import stack;
+arrows point down to a higher L. Layers are import depth, NOT execution order.
+no tag = FACT   [I] INFERENCE   [?] UNKNOWN
+
+"Beta - shared services: core logic and storage ~."
+  docstring at beta/__init__.py:1
+
+L0  +- __init__  (1 module) -------------------------------------------------+
+    | (imports nothing in this scope)                                        |
+    +------------------------------------------------------------------------+
+    +- core  (1 module) -----------------------------------------------------+
+    | ---> store 1                                                           |
+    |       import at beta/core.py:5                                         |
+    +------------------------------------------------------------------------+
+    +- util  (1 module) -----------------------------------------------------+
+    | (imports nothing in this scope)                                        |
+    +------------------------------------------------------------------------+
+    +- x  (1 module) --------------------------------------------------------+
+    | CYCLE with: y                                                          |
+    | ---> y 1                                                               |
+    |       import at beta/x.py:1                                            |
+    +------------------------------------------------------------------------+
+    +- y  (1 module) --------------------------------------------------------+
+    | CYCLE with: x                                                          |
+    | ---> x 1                                                               |
+    |       import at beta/y.py:1                                            |
+    +------------------------------------------------------------------------+
+
+L1  +- store  (7 modules) ---------------------------------------------------+
+    | (imports nothing in this scope)                                        |
+    +------------------------------------------------------------------------+
+
+IMPORTED BY OUTSIDE THIS SCOPE  (outside ---> inside)
+  alpha ---> beta.core  2 import edges
+      example import at alpha/cli.py:3
+  alpha ---> beta.util  1 import edge
+      example import at alpha/report.py:5
+
+UNKNOWN
+  [?] Imports done through importlib or exec are not seen; arrows include
+      imports inside functions and TYPE_CHECKING blocks.

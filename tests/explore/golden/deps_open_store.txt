@@ -1,0 +1,27 @@
+DEPENDENCY MAP  demo  |  scope: component beta.store (modules)
+A ---> B = A imports B; n = import edges. L0 = top of the import stack;
+arrows point down to a higher L. Layers are import depth, NOT execution order.
+no tag = FACT   [I] INFERENCE   [?] UNKNOWN
+
+"Storage."
+
+L0  +- __init__  (1 module) -----------+  +- b  (1 module) ------------------+
+    | (imports nothing in this scope)  |  | (imports nothing in this scope)  |
+    +----------------------------------+  +----------------------------------+
+    +- c  (1 module) ------------------+  +- d  (1 module) ------------------+
+    | (imports nothing in this scope)  |  | (imports nothing in this scope)  |
+    +----------------------------------+  +----------------------------------+
+    +- db  (1 module) -----------------+  +- e  (1 module) ------------------+
+    | ---> a 1                         |  | (imports nothing in this scope)  |
+    +----------------------------------+  +----------------------------------+
+
+L1  +- a  (1 module) ------------------+
+    | (imports nothing in this scope)  |
+    +----------------------------------+
+
+IMPORTED BY OUTSIDE THIS SCOPE  (outside ---> inside)
+  beta.core ---> beta.store.db  1 import edge
+
+UNKNOWN
+  [?] Imports done through importlib or exec are not seen; arrows include
+      imports inside functions and TYPE_CHECKING blocks.

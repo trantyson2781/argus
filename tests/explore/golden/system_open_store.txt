@@ -1,0 +1,31 @@
+SYSTEM MAP  demo  |  15 files scanned, 9 production components
+boxes = containment (what a package holds)     A ---> B = A imports B
+[+] collapsed (--open NAME)    no tag = FACT   [I] INFERENCE   [?] UNKNOWN
+Box order is import layering only, NOT execution order.
+
++- alpha --------------------------------------------------------------------+
+| "Alpha: the user-facing application."                                      |
+| ENTRY  $ alpha -> alpha.cli  (1 command)  pyproject.toml:6                 |
+| CONTAINS                                                                   |
+|   __init__  cli  report                                                    |
++----------------------------------------------------------------------------+
+
+      alpha ---> beta  (3 import edges)
+
++- beta ---------------------------------------------------------------------+
+| "Beta - shared services: core logic and storage ~."                        |
+| CONTAINS                                                                   |
+|   __init__  core  [-] store (7 modules)  util  x  y                        |
+|                                                                            |
+|   [-] store: Storage.                                                      |
+|       __init__  a  b  c  d  db  e                                          |
++----------------------------------------------------------------------------+
+
+IMPORTS BETWEEN SUBSYSTEMS  (A ---> B: A imports B; not execution order)
+  alpha ---> beta  3 import edges
+
+UNKNOWN
+  [?] Imports done through importlib or exec are not seen; arrows include
+      imports inside functions and TYPE_CHECKING blocks.
+
+Next: --view deps (import layers)   --open NAME (expand)   --refs (sources)

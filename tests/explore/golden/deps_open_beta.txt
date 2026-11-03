@@ -1,0 +1,30 @@
+DEPENDENCY MAP  demo  |  scope: subsystem beta
+A ---> B = A imports B; n = import edges. L0 = top of the import stack;
+arrows point down to a higher L. Layers are import depth, NOT execution order.
+no tag = FACT   [I] INFERENCE   [?] UNKNOWN
+
+"Beta - shared services: core logic and storage ~."
+
+L0  +- __init__  (1 module) -----------+  +- core  (1 module) ---------------+
+    | (imports nothing in this scope)  |  | ---> store 1                     |
+    +----------------------------------+  +----------------------------------+
+    +- util  (1 module) ---------------+  +- x  (1 module) ------------------+
+    | (imports nothing in this scope)  |  | CYCLE with: y                    |
+    +----------------------------------+  | ---> y 1                         |
+                                          +----------------------------------+
+    +- y  (1 module) ------------------+
+    | CYCLE with: x                    |
+    | ---> x 1                         |
+    +----------------------------------+
+
+L1  +- store  (7 modules) -------------+
+    | (imports nothing in this scope)  |
+    +----------------------------------+
+
+IMPORTED BY OUTSIDE THIS SCOPE  (outside ---> inside)
+  alpha ---> beta.core  2 import edges
+  alpha ---> beta.util  1 import edge
+
+UNKNOWN
+  [?] Imports done through importlib or exec are not seen; arrows include
+      imports inside functions and TYPE_CHECKING blocks.
